@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keymapping>
+    <application package="com.marconius.ShapeCrafter">
+        <context viewIdResourceName="svg_editor">
+            <action name="substitute">
+                <command
+                    commandId="toggle_tactile_view"
+                    param="140">
+                    <key>Dots78</key>
+                </command>
+            </action>
+        </context>
+        <context viewIdResourceName="SelfBraillingWidget">
+            <action name="substitute">
+                <command
+                    commandId="toggle_tactile_view"
+                    param="140">
+                    <key>Dots78</key>
+                </command>
+            </action>
+        </context>
+    </application>
+</keymapping>

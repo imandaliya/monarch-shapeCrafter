@@ -1,73 +1,93 @@
 # shapeCrafter
 
-shapeCrafter is a beginner-friendly prototype for an APH Monarch app that helps people write SVG by hand and then switch to a full-screen tactile graphics view.
+shapeCrafter is an Android app project built specifically for the APH Monarch.
 
-The long-term goal is to support two full-screen modes:
+Its job is simple to explain:
 
-1. Code view for writing and editing SVG text.
-2. Tactile view for showing a rasterized version of that SVG on the Monarch display.
+1. Let a user write real SVG code in an editor screen.
+2. Let the user press a Monarch command to switch to a full-screen tactile graphics screen.
+3. Render the current SVG into a tactile dot matrix when that toggle happens.
+4. Let the same command switch back to the SVG editor.
 
-This first project scaffold does not claim to be a finished Monarch SDK app yet. Public APH material confirms the Monarch uses a custom SDK and app framework, but the exact public package structure is not broadly documented. Because of that, this repo starts with a platform-ready core that can later connect to the real device layer.
+This project is not targeting ordinary Android phones as the main product. It uses the HumanWare KeySoft SDK patterns already proven in the local Monarch integration work from `WordBopper`.
 
-## Version 1 goals
+## Current milestone
 
-1. Keep SVG text as the main authoring format.
-2. Let a user toggle between full-screen code mode and full-screen tactile mode.
-3. Convert SVG to a raster image only when that toggle happens.
-4. Support new, open, save, save as, and recent SVG files.
-5. Offer beginner-friendly insertion of SVG primitives with editable defaults.
-6. Keep a development journal that explains the project in plain language.
+This milestone is about proving the core end-to-end interaction:
 
-## Current prototype shape
+1. A native editor screen exists.
+2. SVG text can be changed directly.
+3. Starter primitives can be inserted with default values.
+4. A Monarch chord can trigger rendering.
+5. The rendered tactile output takes over the full screen.
+6. The same command returns to the editor.
 
-The current codebase focuses on the app "brain" first:
+## Project structure
 
-1. Document state
-2. Mode switching
-3. Primitive insertion
-4. File bookkeeping
-5. SVG validation and raster conversion planning
+1. `app/src/main/java/com/marconius/shapecrafter/` holds the Android app code.
+2. `app/src/main/java/com/marconius/shapecrafter/ui/` holds the editor screen and theme.
+3. `app/src/main/java/com/marconius/shapecrafter/svg/` holds SVG templates and rendering logic.
+4. `app/src/main/java/com/marconius/shapecrafter/monarch/` holds Monarch SDK integration code.
+5. `app/src/main/res/raw/commands.xml` holds the KeySoft command mapping.
+6. `DEVELOPMENT_JOURNAL.md` explains the build in plain language.
 
-The included `npm start` command runs a small terminal walkthrough. That terminal view is not the final user interface. It is only a simple way to exercise the project structure while the real Monarch integration remains to be built.
+## Monarch-specific design
 
-## Why not build the full Monarch app immediately
+The app follows the same broad SDK shape used in the existing local Monarch integration sample:
 
-Public APH sources make it clear that the Monarch is not a standard Android tablet workflow. That matters because guessing the SDK APIs too early would create brittle code that might need to be thrown away later.
+1. `ShapeCrafterApplication` writes the `commands.xml` file into app-private storage for KeySoft.
+2. `XmlResource` exposes that file through a content provider.
+3. `MainActivity` listens for the mapped toggle command as a normal Android key event.
+4. `MonarchDisplayController` binds to the self-brailling service and displays tactile dots through `SelfBraillingWidget`.
 
-So this project uses a safer layering approach:
+## SVG rendering approach
 
-1. Keep core app logic separate from device-specific integration.
-2. Build the SVG editing model and toggle behavior first.
-3. Add a thin Monarch adapter layer once the real SDK interfaces are available.
+SVG stays the editable source format.
 
-## Project layout
+When the user toggles into tactile mode:
 
-1. `src/app/` starts the prototype and owns top-level app flow.
-2. `src/core/` holds the current document and app session state.
-3. `src/editor/` handles code-mode editing behavior.
-4. `src/tactile/` handles tactile-mode transitions and render state.
-5. `src/svg/` handles SVG templates, validation, and raster conversion planning.
-6. `src/files/` handles local file paths and recent files.
-7. `src/commands/` defines app-level commands such as mode toggle.
-8. `DEVELOPMENT_JOURNAL.md` tells the build story in plain language.
+1. The current SVG text is parsed with AndroidSVG.
+2. The SVG is rendered into a bitmap sized for the Monarch dot surface.
+3. The bitmap is converted into a black-and-white tactile dot matrix.
+4. The dot matrix is sent to the Monarch display.
 
-## Running the prototype
+This means rendering happens only on the mode change, not on every edit.
+
+## Build requirements
+
+1. Android Studio or the Android command-line tools
+2. A local Android SDK
+3. Access to the KeySoft SDK Maven repository
+4. A local `keystore.properties` file for the private KeySoft token and any release signing values
+
+## Local setup
+
+Create a local `keystore.properties` file in the project root when building against the Monarch SDK.
+
+The file should contain the same kinds of private values used by the existing local Monarch project:
+
+1. release signing values when needed
+2. the private KeySoft Maven deploy token
+
+Do not commit this file.
+
+## Build commands
+
+Build a debug APK:
 
 ```bash
-npm start
+./gradlew --no-configuration-cache :app:assembleDebug
 ```
 
-The current terminal walkthrough shows:
+Install on a connected Monarch:
 
-1. A starter SVG document
-2. Primitive insertion
-3. A toggle from code mode to tactile mode
-4. A simulated raster conversion result
-5. A toggle back to code mode
+```bash
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
 
-## Near-term next steps
+## Next steps
 
-1. Replace the terminal walkthrough with a real accessible editor shell.
-2. Add a local files folder flow and real save/open behavior.
-3. Swap the simulated rasterizer for a real SVG-to-PNG conversion path.
-4. Connect the app shell to the real Monarch SDK when available.
+1. Add file open and save support for SVG documents.
+2. Add better tactile-friendly SVG validation messages.
+3. Add a proper primitive insertion menu instead of only quick insert buttons.
+4. Tune raster-to-tactile conversion for line thickness and dense graphics.

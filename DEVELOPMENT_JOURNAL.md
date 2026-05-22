@@ -57,3 +57,51 @@ The next useful milestone is turning this scaffold into a more realistic app she
 2. Replace placeholder raster conversion with a real SVG-to-image implementation.
 3. Build a true accessible editor experience instead of the terminal walkthrough.
 4. Confirm the real Monarch SDK integration points when those APIs are available.
+
+## Entry 2: Replacing the terminal prototype with a real Monarch Android scaffold
+
+The project now has access to the real Monarch SDK path through the local `WordBopper` app, and that changed the right next step.
+
+Instead of continuing with a generic JavaScript prototype, the project now moves into a real Android app structure that matches the existing Monarch integration pattern already working locally. That matters because it teaches an important beginner lesson: once better information becomes available, a good project adapts. Early prototypes are helpful, but they are not sacred.
+
+## What changed in this step
+
+1. The temporary Node prototype files were removed.
+2. The repo was reshaped into an Android and Gradle project.
+3. The app now uses the same private KeySoft Maven repository pattern as the existing Monarch sample.
+4. A real `Application` class writes the Monarch `commands.xml` file into internal storage.
+5. A content provider exposes that command file to KeySoft.
+6. A native SVG editor screen was added for direct code editing.
+7. Quick insert buttons were added for starter SVG primitives.
+8. A Monarch display controller was added to take over the screen for tactile rendering.
+9. AndroidSVG was added so SVG can be rendered into a bitmap before converting to tactile dots.
+
+## Why this is the right shift
+
+At first, the project only knew the public story of the Monarch platform. Later, the real local SDK integration became available. That changed the level of certainty we could work from.
+
+This is normal in software projects. Sometimes the best next step is not adding one more feature. Sometimes it is replacing a temporary scaffold with the real structure the product actually needs.
+
+## Vocabulary
+
+### Gradle
+
+Gradle is the build system used by Android projects. It knows how to compile the app, download dependencies, and produce APK files.
+
+### Content provider
+
+A content provider is an Android component that lets one part of the system expose data to another part in a controlled way. In this project, it is used so KeySoft can read the app's command mapping file.
+
+### Dot matrix
+
+A dot matrix is a grid of raised and lowered pins. In this app, the rendered SVG bitmap is converted into that dot grid so the Monarch can display it tactilely.
+
+## What comes next
+
+The next useful milestone is to test the real toggle loop on hardware:
+
+1. Open the editor on Monarch.
+2. Type or paste SVG.
+3. Trigger the mapped command chord.
+4. Confirm the graphic renders on the tactile display.
+5. Trigger the same command again and return to the editor cleanly.

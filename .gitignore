@@ -3,3 +3,13 @@
 **/._.DS_Store
 .DS_Store
 node_modules/
+.gradle/
+.idea/
+build/
+app/build/
+local.properties
+keystore.properties
+*.jks
+*.keystore
+*.p12
+captures/

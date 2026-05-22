@@ -1,9 +1,0 @@
-{
-  "name": "shapecrafter",
-  "version": "0.1.0",
-  "description": "An educational SVG authoring prototype for the APH Monarch.",
-  "type": "module",
-  "scripts": {
-    "start": "node src/app/main.js"
-  }
-}

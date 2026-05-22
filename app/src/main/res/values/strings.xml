@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">shapeCrafter</string>
+    <string name="editor_title">SVG Editor</string>
+    <string name="editor_intro">Write SVG directly here, then toggle to feel the rendered graphic on the Monarch.</string>
+    <string name="toggle_hint">Use the Render button or the Dots 7-8 chord to switch between the code editor and the tactile graphic.</string>
+    <string name="render_button">Render Tactile Graphic</string>
+    <string name="editor_focused">SVG editor focused</string>
+</resources>
