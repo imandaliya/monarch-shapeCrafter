@@ -35,11 +35,12 @@ What is working now:
 
 What is still in progress:
 
-1. finalizing the best hardware toggle for switching between editor and tactile view
-2. confirming the full screen-to-screen toggle loop on hardware
-3. adding open, save, recent files, and local files folder support
-4. improving tactile rendering quality for line weight and dense graphics
-5. expanding the SVG authoring helpers beyond the current starter buttons
+1. finalizing a working hardware toggle for switching between editor and tactile view
+2. confirming that the graphics screen actually opens on Monarch hardware
+3. confirming that the same control returns cleanly from graphics view back to the editor
+4. adding open, save, recent files, and local files folder support
+5. improving tactile rendering quality for line weight and dense graphics
+6. expanding the SVG authoring helpers beyond the current starter buttons
 
 ## Current milestone
 
@@ -51,6 +52,8 @@ This milestone is about proving the core end-to-end interaction:
 4. A Monarch hardware control can trigger rendering.
 5. The rendered tactile output takes over the full screen.
 6. The same command returns to the editor.
+
+At the moment, this milestone is only partially complete on hardware. The editor screen is working on the Monarch, but the live switch into the tactile graphics screen has not yet succeeded during device testing.
 
 ## Monarch SDK usage
 
@@ -97,6 +100,8 @@ When the user toggles into tactile mode:
 4. The dot matrix is sent to the Monarch display.
 
 This means rendering happens only on the mode change, not on every edit.
+
+The rendering path exists in code, but the hardware-triggered transition into the tactile graphics view is still under active debugging.
 
 ## Starter editor content
 
