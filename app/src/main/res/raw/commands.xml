@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <keymapping>
     <application package="com.marconius.ShapeCrafter">
-        <context viewIdResourceName="svg_editor">
+        <context viewIdResourceName="AppCompatEditText">
             <action name="substitute">
                 <command
                     commandId="toggle_tactile_view"
-                    param="140">
-                    <key>Dots78</key>
+                    param="93">
+                    <key>PageDown</key>
+                </command>
+            </action>
+        </context>
+        <context viewIdResourceName="AndroidComposeView">
+            <action name="substitute">
+                <command
+                    commandId="toggle_tactile_view"
+                    param="93">
+                    <key>PageDown</key>
+                </command>
+            </action>
+        </context>
+        <context viewIdResourceName="ComposeView">
+            <action name="substitute">
+                <command
+                    commandId="toggle_tactile_view"
+                    param="93">
+                    <key>PageDown</key>
+                </command>
+            </action>
+        </context>
+        <context viewIdResourceName="DecorView">
+            <action name="substitute">
+                <command
+                    commandId="toggle_tactile_view"
+                    param="93">
+                    <key>PageDown</key>
                 </command>
             </action>
         </context>
@@ -14,8 +41,8 @@
             <action name="substitute">
                 <command
                     commandId="toggle_tactile_view"
-                    param="140">
-                    <key>Dots78</key>
+                    param="93">
+                    <key>PageDown</key>
                 </command>
             </action>
         </context>

@@ -1,6 +1,7 @@
 package com.marconius.shapecrafter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -52,9 +53,10 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        logKeyEvent("dispatchKeyEvent", event)
         if (
             event.action == KeyEvent.ACTION_DOWN &&
-            event.keyCode == KeyEvent.KEYCODE_F10 &&
+            isToggleKey(event) &&
             handleToggleCommand()
         ) {
             return true
@@ -64,11 +66,22 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_F10 && handleToggleCommand()) {
+        if (event != null) {
+            logKeyEvent("onKeyDown", event)
+        }
+        if (event != null && isToggleKey(event) && handleToggleCommand()) {
             return true
         }
 
         return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event != null) {
+            logKeyEvent("onKeyUp", event)
+        }
+
+        return super.onKeyUp(keyCode, event)
     }
 
     private fun handleToggleCommand(): Boolean {
@@ -111,6 +124,24 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    private fun isToggleKey(event: KeyEvent): Boolean {
+        return event.keyCode == KeyEvent.KEYCODE_PAGE_DOWN ||
+            event.keyCode == KeyEvent.KEYCODE_F10 ||
+            event.keyCode == TOGGLE_COMMAND_KEY_CODE
+    }
+
+    private fun logKeyEvent(source: String, event: KeyEvent) {
+        Log.d(
+            TAG,
+            "$source action=${event.action} keyCode=${event.keyCode} scanCode=${event.scanCode} metaState=${event.metaState} repeat=${event.repeatCount}"
+        )
+    }
+
+    companion object {
+        private const val TAG = "ShapeCrafterKeys"
+        private const val TOGGLE_COMMAND_KEY_CODE = 140
     }
 
 }

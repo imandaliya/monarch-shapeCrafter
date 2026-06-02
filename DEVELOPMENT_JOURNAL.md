@@ -105,3 +105,62 @@ The next useful milestone is to test the real toggle loop on hardware:
 3. Trigger the mapped command chord.
 4. Confirm the graphic renders on the tactile display.
 5. Trigger the same command again and return to the editor cleanly.
+
+## Entry 3: Debugging the real hardware toggle path
+
+The app reached an important milestone: it launched on the Monarch and the SVG editor was visible on the device. That proved the Android scaffold and basic Monarch deployment path were working.
+
+But the next part did not work yet. Pressing the current toggle chord did not switch from the editor into the tactile graphics screen.
+
+That kind of problem is very normal when hardware command mapping is involved. A command may fail for several different reasons:
+
+1. The command file may not have been written correctly.
+2. The focused view may not match the context expected by the device software.
+3. The hardware chord may arrive as a different Android key code than expected.
+4. The app may receive the event, but the handler may not recognize it.
+
+## What changed in this step
+
+1. Logging was added around incoming key events in the main activity.
+2. The app now records the key code, scan code, action, and repeat count for device input.
+3. The toggle handler was made a little more explicit so the real incoming hardware event can be compared against the expected one.
+
+## Why this is useful
+
+When a hardware feature fails, guessing is expensive. Logging narrows the problem quickly.
+
+This is a good beginner lesson because it shows that debugging is not only about fixing mistakes after they happen. It is also about improving visibility so the next decision is based on evidence instead of hope.
+
+## Entry 4: Adjusting the KeySoft command context
+
+The first hardware logging pass taught us something important: the app was running, but the `Dots 7 and 8` toggle did not arrive in the activity as a key event.
+
+That means the problem is probably not the render toggle logic itself. It is more likely happening one step earlier, where KeySoft decides whether the current focused view matches the command mapping context.
+
+## What changed in this step
+
+1. The command mapping stopped relying only on the custom editor id.
+2. The toggle chord was added to broader editor-side contexts such as `AppCompatEditText`, `AndroidComposeView`, `ComposeView`, and `DecorView`.
+3. The existing `SelfBraillingWidget` tactile context was kept.
+
+## Why this matters
+
+Hardware command systems often care deeply about focus and view identity. A command that looks correct on paper may still fail if it is attached to the wrong layer of the interface.
+
+This is another good beginner lesson: when debugging input, sometimes the question is not "What key should this be?" but "Which part of the interface is actually receiving focus right now?"
+
+## Entry 5: Switching the toggle to the Monarch Page Down button
+
+After two failed attempts to use the `Dots 7 and 8` chord, the hardware debugging path finally gave a clearer answer. A raw input capture showed that the preferred physical button was arriving from the Monarch braille key device as a dedicated key event.
+
+That is a much stronger foundation than guessing through shortcut chords.
+
+## What changed in this step
+
+1. The app toggle handler was updated to accept Android `KEYCODE_PAGE_DOWN`.
+2. The command mapping file was updated to reflect `PageDown` with Android keycode `93`.
+3. The toggle design now matches the preferred hardware button choice for this stage of the project.
+
+## Why this matters
+
+This step is a good reminder that the most user-friendly control is not always the one that sounds elegant in planning. A clear, reliable hardware button is often better than a clever shortcut if it works consistently and is easy to remember.

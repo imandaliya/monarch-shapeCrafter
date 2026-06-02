@@ -12,10 +12,11 @@ object SvgTemplates {
 
     fun documentTemplate(): String {
         return listOf(
-            """<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80">""",
-            "  <title>New tactile graphic</title>",
-            "  <desc>A starter SVG document for shapeCrafter.</desc>",
-            """  <rect x="1" y="1" width="118" height="78" stroke="black" stroke-width="1" fill="none" />""",
+            """<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">""",
+            "  <title>Starter tactile graphic</title>",
+            "  <desc>A starter SVG document sized for the Monarch drawing region.</desc>",
+            """  <circle cx="100" cy="100" r="50" stroke-width="2" stroke="black" fill="none" />""",
+            """  <rect x="400" y="100" width="100" height="200" fill="black" />""",
             "</svg>"
         ).joinToString("\n")
     }
